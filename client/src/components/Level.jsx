@@ -1,19 +1,15 @@
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import * as THREE from 'three';
 
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+const floorMaterial = new THREE.MeshStandardMaterial({color: 'black'});
+const floor2material = new THREE.MeshStandardMaterial({color: 'white'});
+const obstacleMaterial = new THREE.MeshStandardMaterial({color: 'red'});
+const blockEndMaterial = new THREE.MeshStandardMaterial({color: 'blue'});
 
-const Level = () => {
-
-    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-    const floorMaterial = new THREE.MeshStandardMaterial({color: 'black'});
-    const floor2material = new THREE.MeshStandardMaterial({color: 'white'});
-    const obstacleMaterial = new THREE.MeshStandardMaterial({color: 'red'});
-
-
-
-  function BlockStart({position = [0, 0, 0]}) {
+export function BlockStart({position = [0, 0, 0]}) {
     return <>
     <group position={position}>
        <mesh  geometry={boxGeometry}  material={floorMaterial}   position = {[0, -0.1, 0]} scale = {[4, 0.2, 4]} receiveShadow >
@@ -23,7 +19,7 @@ const Level = () => {
     </>
   }
 
-  function BlockSpinner({position = [0, 0, 0]}) {
+   export function BlockSpinner({position = [0, 0, 0]}) {
 
     const obstacleRef = useRef();
 
@@ -50,7 +46,7 @@ const Level = () => {
   }
 
 
-  function BlockLimbo({position = [0, 0, 0]}) {
+  export function BlockLimbo({position = [0, 0, 0]}) {
 
     const obstacleRef = useRef();
     const [timeOffset] = useState(() => Math.random() * Math.PI * 2);
@@ -76,7 +72,7 @@ const Level = () => {
   }
 
 
-  function BlockAxe({position = [0, 0, 0]}) {
+  export function BlockAxe({position = [0, 0, 0]}) {
 
     const obstacleRef = useRef();
     const [timeOffset] = useState(() => Math.random() * Math.PI * 2);
@@ -102,14 +98,63 @@ const Level = () => {
   }
 
 
+  export function BlockImage({position = [0, 0, 0]}) {
+
+    const obstacleRef = useRef();
+    const [timeOffset] = useState(() => Math.random() * Math.PI * 2);
+
+    useFrame((state) => {
+       const time = state.clock.getElapsedTime();
+
+       const y = Math.sin(time + timeOffset) + 1.15;
+       obstacleRef.current.setNextKinematicTranslation({x: position[0], y: position[1] + y + 0.75, z:position[2]});
+
+    })
+
+    return <>
+    <group position={position}>
+       <mesh  geometry={boxGeometry}  material={floorMaterial}   position = {[0, -0.1, 0]} scale = {[4, 0.2, 4]} receiveShadow />
+       <RigidBody ref = {obstacleRef} type='kinematicPosition' position = {[0, 0.3, 0]} restitution={0.2} friction={0}>
+       <mesh geometry={boxGeometry} material={obstacleMaterial} scale={[ 3.5, 1.5, 0.3 ]} castShadow receiveShadow />
+       </RigidBody>
+         
+
+       </group>
+    </>
+  }
+
+
+  
+  export function BlockEnd({position = [0, 0, 0]}) {
+    return <>
+    <group position={position}>
+       <mesh  geometry={boxGeometry}  material={blockEndMaterial}   position = {[0, 0.1, 0]} scale = {[4, 0.2, 4]} receiveShadow >
+       
+       </mesh>
+       </group>
+    </>
+  }
+
+export const Level = ({count = 6, types = [BlockSpinner, BlockAxe, BlockLimbo, BlockImage]}) => {
+      
+    const blocks = useMemo(() =>
+    {
+        const blocks = []
+
+        for(let i = 0; i < count; i++)
+        {
+            const type = types[ Math.floor(Math.random() * types.length) ]
+            blocks.push(type)
+        }
+
+        return blocks
+    }, [ count, types ])
   return (
    <>
 
 
-        <BlockStart position = { [0, 0, 12] } />
-        <BlockSpinner position={ [0, 0, 8]  } />
-        <BlockLimbo position={ [0, 0, 4]  } />
-        <BlockAxe position={ [0, 0, 0]  } />
+        <BlockStart position = { [0, 0, 0] } />
+          {blocks.map((Block, index) => <Block key={index} position={ [ 0, 0, - (index + 1) * 4 ] }/>)}
    </>
   )
 }

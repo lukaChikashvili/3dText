@@ -1,4 +1,4 @@
-import Level from "./Level"
+import Level from "./Level";
 import Lights from "./Lights"
 import { OrbitControls } from '@react-three/drei'
 import { Physics } from '@react-three/rapier';
@@ -17,7 +17,7 @@ const Example = () => {
 
       <Lights />
 
-      <Level />
+      <Level   />
       </Physics>
            </>
   )
