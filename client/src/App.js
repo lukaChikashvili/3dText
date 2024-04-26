@@ -1,6 +1,7 @@
 import { Canvas, } from '@react-three/fiber';
 
 import Example from './components/Example';
+import { KeyboardControls } from '@react-three/drei';
 
 
 function App() {
@@ -8,6 +9,16 @@ function App() {
   
   return (
     <div className="App">
+      <KeyboardControls 
+         map = { [
+            {name: 'forward', keys: ['ArrowUp', 'KeyW']},
+            {name: 'backward', keys: ['ArrowDown', 'KeyS']},
+            {name: 'leftward', keys: ['ArrowLeft', 'KeyA']},
+            {name: 'rightward', keys: ['ArrowRight', 'KeyD']},
+            {name: 'jump', keys: ['Space']},
+         ]}
+      
+      >
         <Canvas
         shadows
         camera={ {
@@ -19,6 +30,7 @@ function App() {
     >
         <Example />
           </Canvas>
+          </KeyboardControls>
     </div>
   );
 }
