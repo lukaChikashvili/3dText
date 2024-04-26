@@ -1,14 +1,21 @@
+import { useMatcapTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import React, { useMemo, useRef, useState } from 'react'
 import * as THREE from 'three';
 
+
+
+
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const floorMaterial = new THREE.MeshStandardMaterial({color: 'black'});
-const floor2material = new THREE.MeshStandardMaterial({color: 'white'});
-const obstacleMaterial = new THREE.MeshStandardMaterial({color: 'red'});
+const floorMaterial = new THREE.MeshPhongMaterial( { color: 'green' } );
+const floor2material = new THREE.MeshStandardMaterial({color: 'lime'});
+const texture = new THREE.TextureLoader();
+const putin = texture.load('https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-11/221109-vladimir-putin-se-1143p-4c7bd0.jpg');
+const obstacleMaterial = new THREE.MeshStandardMaterial({map: putin});
 const blockEndMaterial = new THREE.MeshStandardMaterial({color: 'blue'});
-const wallMaterial = new THREE.MeshStandardMaterial({color: 'gray'});
+
+const wallMaterial =  new THREE.MeshMatcapMaterial({color: '#865DFF'});
 
 export function BlockStart({position = [0, 0, 0]}) {
     return <>
@@ -172,8 +179,9 @@ export function BlockStart({position = [0, 0, 0]}) {
     
   }
 
-export const Level = ({count = 6, types = [BlockSpinner, BlockAxe, BlockLimbo, BlockImage]}) => {
-      
+export const Level = ({count = 50, types = [BlockSpinner, BlockAxe, BlockLimbo, BlockImage]}) => {
+
+
     const blocks = useMemo(() =>
     {
         const blocks = []

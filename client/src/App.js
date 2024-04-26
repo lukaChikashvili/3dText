@@ -4,6 +4,7 @@ import Example from './components/Example';
 import { KeyboardControls } from '@react-three/drei';
 
 
+
 function App() {
 
   
@@ -30,6 +31,7 @@ function App() {
     >
         <Example />
           </Canvas>
+
           </KeyboardControls>
     </div>
   );
