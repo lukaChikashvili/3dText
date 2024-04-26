@@ -5,13 +5,20 @@ import Example from './components/Example';
 
 function App() {
 
-   
-
+  
   return (
     <div className="App">
-       <Canvas>
-          <Example />
-       </Canvas>
+        <Canvas
+        shadows
+        camera={ {
+            fov: 45,
+            near: 0.1,
+            far: 200,
+            position: [ 2.5, 4, 6 ]
+        } }
+    >
+        <Example />
+          </Canvas>
     </div>
   );
 }
