@@ -2,6 +2,7 @@ import { Canvas, } from '@react-three/fiber';
 
 import Example from './components/Example';
 import { KeyboardControls } from '@react-three/drei';
+import Timer from './components/Timer';
 
 
 
@@ -31,7 +32,7 @@ function App() {
     >
         <Example />
           </Canvas>
-
+           <Timer />
           </KeyboardControls>
     </div>
   );

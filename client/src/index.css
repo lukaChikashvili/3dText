@@ -11,3 +11,12 @@
     background-color: skyblue;
 }
 
+.timer {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #fff;
+    font-size: 30px;
+    padding: 10px;
+}
